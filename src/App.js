@@ -1,10 +1,8 @@
-
 function App() {
   return (
     <div
-      className="App"
       style={{
-        backgroundImage: "url('/public/bg.jpg')",
+        backgroundImage: "url('/bg.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         height: "100vh",
@@ -13,7 +11,8 @@ function App() {
         justifyContent: "center",
         alignItems: "center",
         color: "white",
-        textAlign: "center"
+        textAlign: "center",
+        fontFamily: "Arial, sans-serif"
       }}
     >
       <h1 style={{ fontSize: '4rem' }}>LOOTCLUB</h1>
