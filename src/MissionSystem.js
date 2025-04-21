@@ -1,153 +1,16 @@
-<<<<<<< HEAD
-import React, { useState, useEffect } from 'react';
-import { db, auth } from './firebase/firebase';
-import { doc, setDoc } from 'firebase/firestore';
+import React from 'react';
 
-const initialMissions = [
-=======
-import React, { useState } from 'react';
-
-const missions = [
->>>>>>> 4eb5d6ffe6870e4abd568980cd1498a06f5105d0
-  {
-    id: 1,
-    title: "Gioca 10 partite",
-    description: "Completa 10 partite per guadagnare 50 XP.",
-    reward: 50,
-    completed: false,
-    progress: 0,
-  },
-  {
-    id: 2,
-    title: "Vinci 5 partite",
-    description: "Vinci 5 partite per guadagnare 100 XP.",
-    reward: 100,
-    completed: false,
-    progress: 0,
-  },
-  {
-    id: 3,
-    title: "Completa 10 missioni",
-    description: "Completa tutte le missioni disponibili per guadagnare un premio speciale.",
-    reward: "Premio Speciale",
-    completed: false,
-    progress: 0,
-  }
-];
-
-function MissionSystem() {
-<<<<<<< HEAD
-  const [missionsState, setMissionsState] = useState(initialMissions);
-  const [uid, setUid] = useState(null);
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
-      if (user) setUid(user.uid);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  const saveMissionProgress = async (uid, missionId, progress) => {
-    if (!uid) return;
-    const userRef = doc(db, 'users', uid);
-    await setDoc(userRef, {
-      missions: {
-        [missionId]: progress
-      }
-    }, { merge: true });
-  };
-
-  const updateMissionProgress = async (id, currentProgress, totalParts) => {
-    const newProgress = Math.min((currentProgress + 1), totalParts);
-    const percentage = (newProgress / totalParts) * 100;
-
-    setMissionsState(prevState =>
-      prevState.map(mission => 
-        mission.id === id 
-          ? { ...mission, progress: percentage }
-          : mission
-      )
-    );
-
-    await saveMissionProgress(uid, id, percentage);
-  };
-
-  const completeMission = async (id) => {
-=======
-  const [missionsState, setMissionsState] = useState(missions);
-
-  const updateMissionProgress = (id, completedPart, totalParts) => {
-    setMissionsState(prevState =>
-      prevState.map(mission => 
-        mission.id === id 
-          ? { ...mission, progress: (completedPart / totalParts) * 100 }
-          : mission
-      )
-    );
-  };
-
-  const completeMission = (id) => {
->>>>>>> 4eb5d6ffe6870e4abd568980cd1498a06f5105d0
-    setMissionsState(prevState =>
-      prevState.map(mission => 
-        mission.id === id
-          ? { ...mission, completed: true }
-          : mission
-      )
-    );
-<<<<<<< HEAD
-
-    await saveMissionProgress(uid, id, 100);
-=======
->>>>>>> 4eb5d6ffe6870e4abd568980cd1498a06f5105d0
-  };
-
+const MissionSystem = () => {
   return (
-    <div className="mission-system">
-      <h2>Missioni a Premi</h2>
-      {missionsState.map(mission => (
-<<<<<<< HEAD
-        <div key={mission.id} className="mission border p-4 rounded shadow-md mb-4 bg-white">
-          <h3 className="text-xl font-bold">{mission.title}</h3>
-          <p>{mission.description}</p>
-          <p>Progresso: {mission.progress.toFixed(0)}%</p>
-          <div className="w-full bg-gray-200 h-2 rounded mb-2">
-            <div style={{ width: `${mission.progress}%` }} className="bg-green-500 h-2 rounded"></div>
-          </div>
-          <button
-            className="bg-blue-600 text-white px-4 py-1 rounded mr-2"
-            onClick={() => updateMissionProgress(mission.id, mission.progress / 10, 10)}
-          >
-            Aggiungi Progresso
-          </button>
-          {!mission.completed ? (
-            <button
-              className="bg-green-600 text-white px-4 py-1 rounded"
-              onClick={() => completeMission(mission.id)}
-            >
-              Completa Missione
-            </button>
-          ) : (
-            <p className="text-green-700 font-semibold">Completata! 🎉 Premio: {mission.reward}</p>
-=======
-        <div key={mission.id} className="mission">
-          <h3>{mission.title}</h3>
-          <p>{mission.description}</p>
-          <p>Progresso: {mission.progress}%</p>
-          <div style={{ width: `${mission.progress}%`, height: '10px', backgroundColor: 'green' }}></div>
-          <button onClick={() => updateMissionProgress(mission.id, mission.progress + 1, 10)}>
-            Completa parte della missione
-          </button>
-          {mission.completed ? (
-            <p>Missione completata! Premio: {mission.reward}</p>
-          ) : (
-            <button onClick={() => completeMission(mission.id)}>Completa Missione</button>
->>>>>>> 4eb5d6ffe6870e4abd568980cd1498a06f5105d0
-          )}
-        </div>
-      ))}
+    <div className="p-4 text-white">
+      <h2 className="text-xl font-bold mb-2">Missioni Settimanali</h2>
+      <ul className="list-disc pl-5">
+        <li>Gioca 5 partite su Fortnite</li>
+        <li>Ottieni almeno 1 vittoria in Warzone</li>
+        <li>Completa una sfida su Valorant</li>
+      </ul>
     </div>
   );
-}
+};
 
 export default MissionSystem;
