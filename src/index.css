@@ -1,7 +1,11 @@
 @tailwind base;
 @tailwind components;
+<<<<<<< HEAD
 @tailwind utilities;
 
 body {
   font-family: 'Space Grotesk', sans-serif;
 }
+=======
+@tailwind utilities;
+>>>>>>> 4eb5d6ffe6870e4abd568980cd1498a06f5105d0
