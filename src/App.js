@@ -1,3 +1,13 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import Login from './Login';
+import Signup from './Signup';
+import Home from './Home';
+import Dashboard from './Dashboard';
+import MissionSystem from './MissionSystem';
+import Leaderboard from './Leaderboard';
+
 function App() {
   return (
     <div
@@ -6,18 +16,22 @@ function App() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        color: "white",
-        textAlign: "center",
-        fontFamily: "Arial, sans-serif"
+        width: "100vw",
+        overflow: "auto",
       }}
     >
-      <h1 style={{ fontSize: '4rem' }}>LOOTCLUB</h1>
-      <p style={{ fontSize: '1.2rem' }}>Benvenuto nella tua community gaming</p>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/missions" element={<MissionSystem />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
+
 export default App;

@@ -1,23 +1,15 @@
 import React from 'react';
-import { auth } from './firebase';
-import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard() {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    auth.signOut().then(() => navigate('/signup'));
-  };
-
   return (
-    <div className="min-h-screen text-white flex flex-col items-center justify-center bg-black/50">
-      <h1 className="text-4xl font-bold mb-6">Benvenuto su LootClub 🎮</h1>
-      <button
-        onClick={handleLogout}
-        className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded"
-      >
-        Logout
-      </button>
+    <div className="min-h-screen p-10 bg-gray-950 text-white">
+      <h1 className="text-4xl font-bold mb-6">Dashboard</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-gray-900 p-6 rounded-xl shadow-md">🎁 I tuoi Giveaway</div>
+        <div className="bg-gray-900 p-6 rounded-xl shadow-md">🏆 Missioni completate</div>
+        <div className="bg-gray-900 p-6 rounded-xl shadow-md">📦 Inventario</div>
+        <div className="bg-gray-900 p-6 rounded-xl shadow-md">📰 Notizie esclusive</div>
+      </div>
     </div>
   );
 }

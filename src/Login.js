@@ -1,54 +1,80 @@
-import React, { useState } from 'react';
-import { auth, provider } from './firebase';
-import { signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth';
+
+import React, { useState } from "react";
+import { auth, googleProvider, facebookProvider } from "./firebase";
+import { signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import './Login.css';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
-  const signInWithGoogle = async () => {
-    try {
-      await signInWithPopup(auth, provider);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const signInWithEmail = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-      console.error(error);
+      navigate("/dashboard");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleGoogle = async () => {
+    try {
+      await signInWithPopup(auth, googleProvider);
+      navigate("/dashboard");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleFacebook = async () => {
+    try {
+      await signInWithPopup(auth, facebookProvider);
+      navigate("/dashboard");
+    } catch (err) {
+      console.error(err);
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white px-4">
-      <h1 className="text-4xl font-bold mb-6">Login LootClub</h1>
-      <form onSubmit={signInWithEmail} className="space-y-4 w-full max-w-xs">
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full p-2 text-black"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full p-2 text-black"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit" className="w-full bg-blue-600 py-2 rounded text-white">
-          Accedi
-        </button>
-      </form>
-      <p className="mt-4">oppure</p>
-      <button onClick={signInWithGoogle} className="mt-2 bg-red-600 py-2 px-4 rounded">
-        Accedi con Google
-      </button>
+    <div className="login-container">
+      <div className="login-box">
+        <div className="login-icon">
+          <img src="/icon.png" alt="User Icon" />
+        </div>
+        <h1>LOGIN</h1>
+        <form onSubmit={handleLogin}>
+          <div className="input-group">
+            <input
+              type="email"
+              placeholder="User name"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input-group">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit" className="login-button">LOGIN</button>
+        </form>
+        <p className="register-link">
+          Non hai un account? <a href="/signup">Registrati</a>
+        </p>
+        <div className="social-login">
+          <button onClick={handleGoogle} className="google-button">Google</button>
+          <button onClick={handleFacebook} className="facebook-button">Facebook</button>
+        </div>
+      </div>
     </div>
   );
 };

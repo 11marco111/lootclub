@@ -1,91 +1,32 @@
 import React, { useState } from 'react';
-import { auth, googleProvider, facebookProvider } from './firebase';
-import {
-  signInWithPopup,
-  createUserWithEmailAndPassword,
-  signInWithCustomToken
-} from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
-import { FaGoogle, FaFacebook, FaGamepad, FaSteam } from 'react-icons/fa';
 
 export default function Signup() {
-  const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleSocialLogin = (provider) => {
-    signInWithPopup(auth, provider)
-      .then(() => navigate('/dashboard'))
-      .catch((err) => {
-        console.error(err);
-        alert('Errore durante il login.');
-      });
-  };
-
-  const handleCustomOAuth = async (providerName) => {
-    try {
-      const res = await fetch(`https://lootclub-backend.onrender.com/api/oauth/${providerName}`);
-      const data = await res.json();
-      await signInWithCustomToken(auth, data.token);
-      navigate('/dashboard');
-    } catch (err) {
-      console.error(err);
-      alert(`Errore durante il login con ${providerName}`);
-    }
-  };
-
-  const handleEmailSignup = async (e) => {
-    e.preventDefault();
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      navigate('/dashboard');
-    } catch (err) {
-      alert(err.message);
-    }
-  };
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="min-h-screen text-white flex flex-col items-center justify-center px-4 bg-black/50">
-      <h1 className="text-3xl font-bold mb-4">Registrati</h1>
-      <form onSubmit={handleEmailSignup} className="w-full max-w-sm mb-6">
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="w-full mb-4 p-3 rounded bg-gray-800 text-white"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="w-full mb-4 p-3 rounded bg-gray-800 text-white"
-        />
-        <button
-          type="submit"
-          className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 rounded"
-        >
-          Registrati con Email
+    <div className="min-h-screen flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
+      <div className="bg-gray-900 text-white p-8 rounded-xl shadow-xl w-full max-w-md">
+        <h2 className="text-3xl font-bold text-center mb-6">Join LootClub</h2>
+        <input type="email" placeholder="Email" className="w-full p-3 mb-4 rounded bg-gray-800 text-white" />
+        <div className="relative mb-4">
+          <input
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Password"
+            className="w-full p-3 rounded bg-gray-800 text-white"
+          />
+          <button
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-3 text-sm text-blue-400"
+          >
+            {showPassword ? 'Hide' : 'Show'}
+          </button>
+        </div>
+        <button className="w-full bg-green-600 hover:bg-green-700 transition rounded p-3 font-semibold">
+          Sign Up
         </button>
-      </form>
-
-      <p className="mb-2 text-gray-300">oppure continua con</p>
-      <div className="flex gap-6 text-4xl">
-        <button onClick={() => handleSocialLogin(googleProvider)} className="hover:scale-110 transition">
-          <FaGoogle className="text-red-400" />
-        </button>
-        <button onClick={() => handleSocialLogin(facebookProvider)} className="hover:scale-110 transition">
-          <FaFacebook className="text-blue-500" />
-        </button>
-        <button onClick={() => handleCustomOAuth('epic')} className="hover:scale-110 transition">
-          <FaGamepad className="text-purple-400" title="Epic Games" />
-        </button>
-        <button onClick={() => handleCustomOAuth('arc')} className="hover:scale-110 transition">
-          <FaSteam className="text-gray-300" title="Arc Games" />
-        </button>
+        <p className="text-center mt-4 text-sm">
+          Already have an account? <a href="/login" className="text-blue-400">Login</a>
+        </p>
       </div>
     </div>
   );
